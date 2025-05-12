@@ -1,5 +1,5 @@
 from document_loader import DocumentLoader
-from retrieval import Retrieval
+from retrieval import Retriever
 
 FILES_PATH = "data/files"
 CHROMA_PATH = "data/vector_db"
@@ -11,8 +11,8 @@ def main():
     chunks = documentLoader.split_documents(docs)
     documentLoader.add_new_chunks_to_chroma(chunks)
 
-    retrieval_tool = Retrieval(CHROMA_PATH, OLLAMA_MODEL)
-    retrieval_tool.query_rag(retrieval_tool.get_user_query())
+    retriever = Retriever(CHROMA_PATH, OLLAMA_MODEL)
+    retriever.query_rag(retriever.get_user_query())
 
 if __name__ == "__main__":
     main()

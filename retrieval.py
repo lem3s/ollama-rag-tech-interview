@@ -18,7 +18,7 @@ Se a questão não está relacionada as informações de RH fornecidas você dev
 que não há informações suficientes para responder a questão. Responda em português brasileiro.
 """
 
-class Retrieval:
+class Retriever:
     def __init__(self, chroma_path: str, ollama_model: str):
         self.chroma_path = chroma_path
         self.ollama_model = ollama_model
