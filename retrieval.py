@@ -37,7 +37,7 @@ class Retriever:
             embedding_function=embedding_function
         )
 
-        search_results = vector_store.similarity_search(query, k=3)
+        search_results = vector_store.similarity_search(query, k=5)
 
         context_text = ""
         for doc in search_results:
