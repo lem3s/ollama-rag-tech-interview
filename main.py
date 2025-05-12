@@ -4,8 +4,8 @@ from retrieval import Retriever
 FILES_PATH = "data/files"
 CHROMA_PATH = "data/vector_db"
 OLLAMA_MODEL = "llama3:8b"
-CHUNK_SIZE = 1000
-CHUNK_OVERLAP = 200
+CHUNK_SIZE = 1024
+CHUNK_OVERLAP = 128
 
 def main():
     documentLoader = DocumentLoader(FILES_PATH, CHROMA_PATH, OLLAMA_MODEL)
