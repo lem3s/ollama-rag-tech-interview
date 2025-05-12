@@ -23,12 +23,12 @@ class Retriever:
         self.chroma_path = chroma_path
         self.ollama_model = ollama_model
 
-    def get_user_query(self) -> str:
+    def get_user_prompt(self) -> str:
         parser = argparse.ArgumentParser()
-        parser.add_argument("query_text", type=str, help="The query text.")
+        parser.add_argument("user_prompt", type=str, help="O prompt do usuário.")
         args = parser.parse_args()
 
-        return args.query_text
+        return args.user_prompt
 
     def query_rag(self, query: str) -> str:
         embedding_function = get_embedding_function(self.ollama_model)
@@ -39,14 +39,20 @@ class Retriever:
 
         search_results = vector_store.similarity_search(query, k=3)
 
-        context_text = "\n\n---\n\n".join([doc.page_content for doc in search_results])
+        context_text = ""
+        for doc in search_results:
+            context_text += doc.page_content + "\n\n---\n\n"
+
         prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
         prompt = prompt_template.format(context=context_text, question=query)
 
         model = OllamaLLM(model=self.ollama_model)
         response_text = model.invoke(prompt)
 
-        sources = [doc.metadata.get("id", None) for doc in search_results]
-        formatted_response = f"Response: {response_text}\nSources: {sources}"
+        sources = []
+        for doc in search_results:
+            sources.append(doc.metadata.get("id", None))
+
+        formatted_response = f"Resposta: {response_text}\n\n\nFontes: {sources}"
         print(formatted_response)
         return response_text
